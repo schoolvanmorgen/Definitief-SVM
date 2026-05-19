@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School van morgen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --accent:#3d6b52; --accent-hover:#2e5440; --accent-subtle:#eef4f0; --accent-border:#bfd5c8;
+  --n-0:#fff; --n-50:#f8f9fa; --n-100:#f1f3f5; --n-200:#e9ecef; --n-300:#dee2e6;
+  --n-400:#adb5bd; --n-500:#6c757d; --n-600:#495057; --n-700:#343a40; --n-900:#212529;
+  --danger:#c92a2a; --danger-subtle:#fff5f5;
+  --success:#2f9e44; --success-subtle:#ebfbee; --success-border:#8ce99a;
+  --font-display:'Fraunces',Georgia,serif; --font-body:'DM Sans',system-ui,sans-serif;
+  --r-sm:4px; --r-md:8px; --r-lg:12px; --r-pill:9999px;
+  --ease:cubic-bezier(.16,1,.3,1); --t:150ms var(--ease);
+}
+html,body { font-family:var(--font-body); font-size:14px; line-height:1.65; color:var(--n-900); background:var(--n-50); min-height:100vh; -webkit-font-smoothing:antialiased; }
+
+/* HEADER */
+header { height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 24px; background:var(--n-0); border-bottom:1px solid var(--n-200); position:sticky; top:0; z-index:100; }
+.logo { font-family:var(--font-display); font-size:19px; font-weight:400; letter-spacing:-.02em; }
+.logo em { font-style:italic; color:var(--accent); }
+.header-rechts { display:flex; align-items:center; gap:10px; }
+.avatar { width:30px; height:30px; border-radius:50%; background:var(--accent-subtle); border:1.5px solid var(--accent-border); color:var(--accent); font-size:11px; font-weight:600; display:inline-flex; align-items:center; justify-content:center; }
+
+/* SYSTEEM BAR */
+.systeem-bar { background:var(--n-0); border-bottom:1px solid var(--n-200); padding:0 24px; display:flex; align-items:center; gap:6px; min-height:48px; position:sticky; top:56px; z-index:99; flex-wrap:wrap; }
+.sb-label { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--n-400); margin-right:6px; white-space:nowrap; flex-shrink:0; }
+.sb-pill { display:inline-flex; align-items:center; gap:7px; padding:5px 12px 5px 8px; border-radius:var(--r-pill); border:1.5px solid var(--n-200); background:var(--n-50); cursor:pointer; font-size:12px; font-family:var(--font-body); font-weight:400; color:var(--n-500); transition:all var(--t); user-select:none; white-space:nowrap; }
+.sb-pill:hover { border-color:var(--n-300); color:var(--n-700); background:var(--n-100); }
+.sb-pill.actief { border-color:var(--accent-border); background:var(--accent-subtle); color:var(--accent); font-weight:500; }
+.sb-pill.actief .sb-icoon { background:var(--accent); color:var(--n-0); }
+.sb-icoon { width:18px; height:18px; border-radius:50%; background:var(--n-300); color:var(--n-0); font-size:9px; font-weight:700; font-family:var(--font-body); display:inline-flex; align-items:center; justify-content:center; transition:background var(--t); flex-shrink:0; }
+.sb-rechts { margin-left:auto; display:flex; align-items:center; gap:5px; font-size:11px; font-weight:500; color:var(--accent); flex-shrink:0; }
+.sb-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+@media(max-width:600px) { .systeem-bar { padding:8px 14px; } .sb-label { display:none; } }
+
+/* MAIN */
+.main { max-width:620px; margin:0 auto; padding:32px 20px 60px; }
+
+/* CONTEXT */
+.context-rij { display:flex; gap:8px; margin-bottom:20px; }
+.ctx-select { flex:1; height:40px; padding:0 30px 0 12px; font-family:var(--font-body); font-size:13px; color:var(--n-600); background:var(--n-0); border:1.5px solid var(--n-300); border-radius:var(--r-md); outline:none; cursor:pointer; transition:border-color var(--t); appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23adb5bd' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; min-width:0; }
+.ctx-select:focus { border-color:var(--accent-border); }
+.ctx-select.gevuld { border-color:var(--accent-border); color:var(--n-900); font-weight:500; }
+
+/* INVOERKAART */
+.invoerkaart { background:var(--n-0); border:1.5px solid var(--n-200); border-radius:var(--r-lg); overflow:hidden; transition:border-color var(--t); }
+.invoerkaart:focus-within { border-color:var(--accent-border); }
+.invoerveld { width:100%; min-height:130px; padding:16px; font-family:var(--font-body); font-size:14px; color:var(--n-900); background:transparent; border:none; outline:none; resize:none; line-height:1.65; }
+.invoerveld::placeholder { color:var(--n-400); }
+.opname-strip { display:none; align-items:center; gap:8px; padding:8px 16px; background:var(--danger-subtle); border-top:1px solid #ffc9c9; font-size:12px; color:var(--danger); }
+.opname-strip.actief { display:flex; }
+.puls { width:7px; height:7px; border-radius:50%; background:var(--danger); animation:p 1s ease-in-out infinite; }
+@keyframes p { 0%,100%{opacity:1} 50%{opacity:.2} }
+.kaart-bodem { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-top:1px solid var(--n-100); background:var(--n-50); gap:8px; }
+.kaart-links { display:flex; align-items:center; gap:6px; }
+.icoon-knop { width:32px; height:32px; border-radius:var(--r-md); border:1.5px solid var(--n-200); background:var(--n-0); color:var(--n-400); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:all var(--t); }
+.icoon-knop:hover { border-color:var(--n-300); color:var(--n-600); }
+.icoon-knop.actief { border-color:#ffa8a8; background:var(--danger-subtle); color:var(--danger); }
+.icoon-knop svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
+.char-teller { font-size:11px; color:var(--n-400); }
+.verstuur-knop { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; background:var(--accent); color:var(--n-0); border:none; border-radius:var(--r-md); font-family:var(--font-body); font-size:13px; font-weight:500; cursor:pointer; transition:background var(--t); }
+.verstuur-knop:hover { background:var(--accent-hover); }
+.verstuur-knop svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+
+/* BEVESTIGING */
+.bevestig { display:none; margin-top:12px; background:var(--n-0); border:2px solid var(--accent-border); border-radius:var(--r-lg); overflow:hidden; }
+.bevestig.zichtbaar { display:block; animation:fadeUp 140ms var(--ease); }
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.bev-kop { display:flex; align-items:center; gap:8px; padding:11px 16px; background:var(--accent-subtle); border-bottom:1px solid var(--accent-border); font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); }
+.bev-kop svg { width:13px; height:13px; stroke:var(--accent); fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+.bev-rij { display:flex; justify-content:space-between; align-items:baseline; padding:9px 16px; border-bottom:1px solid var(--n-100); font-size:13px; gap:12px; }
+.bev-rij:last-of-type { border-bottom:none; }
+.b-lbl { color:var(--n-500); flex-shrink:0; font-size:12px; }
+.b-val { color:var(--n-900); font-weight:500; text-align:right; }
+.b-pad { font-size:11px; background:#e7f0fb; color:#185fa5; padding:2px 7px; border-radius:4px; }
+.bev-acties { display:flex; gap:8px; padding:12px 16px; background:var(--n-50); border-top:1px solid var(--n-200); }
+.knop-sec { padding:8px 14px; background:transparent; color:var(--n-500); border:1.5px solid var(--n-200); border-radius:var(--r-md); font-family:var(--font-body); font-size:13px; cursor:pointer; transition:all var(--t); }
+.knop-sec:hover { border-color:var(--n-300); color:var(--n-700); }
+
+/* SUCCES */
+.succes { display:none; align-items:center; gap:10px; padding:12px 16px; background:var(--success-subtle); border:1.5px solid var(--success-border); border-radius:var(--r-md); margin-top:12px; font-size:13px; color:var(--success); font-weight:500; }
+.succes.zichtbaar { display:flex; animation:fadeUp 140ms var(--ease); }
+.succes svg { width:15px; height:15px; stroke:var(--success); fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+
+/* RECENTE NOTITIES */
+.recente-kop { display:flex; align-items:center; justify-content:space-between; margin:28px 0 10px; }
+.recente-titel { font-size:11px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--n-400); }
+.recente-link { font-size:12px; color:var(--accent); cursor:pointer; }
+.notitie-kaart { background:var(--n-0); border:1px solid var(--n-200); border-radius:var(--r-md); padding:12px 14px; margin-bottom:8px; display:flex; gap:12px; align-items:flex-start; }
+.n-init { width:28px; height:28px; min-width:28px; border-radius:50%; background:var(--accent-subtle); color:var(--accent); font-size:10px; font-weight:700; font-family:var(--font-body); display:inline-flex; align-items:center; justify-content:center; margin-top:1px; }
+.n-body { flex:1; min-width:0; }
+.n-meta { display:flex; align-items:center; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
+.n-naam { font-size:13px; font-weight:500; }
+.n-badge { font-size:10px; padding:2px 7px; border-radius:var(--r-pill); background:var(--n-100); color:var(--n-500); font-weight:500; }
+.n-badge.zorg { background:#fff3bf; color:#e67700; }
+.n-badge.rapport { background:#e7f0fb; color:#185fa5; }
+.n-badge.toets { background:var(--accent-subtle); color:var(--accent); }
+.n-tekst { font-size:12px; color:var(--n-600); line-height:1.5; }
+.n-tijd { font-size:11px; color:var(--n-400); margin-left:auto; flex-shrink:0; }
+
+/* SYSTEEM MODAL */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:200; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--n-0); border-radius:var(--r-lg); width:460px; max-width:calc(100vw - 32px); overflow:hidden; animation:fadeUp 160ms var(--ease); }
+.modal-kop { padding:16px 20px; border-bottom:1px solid var(--n-200); display:flex; align-items:center; justify-content:space-between; }
+.modal-kop-titel { font-size:15px; font-weight:500; }
+.modal-sluit { width:28px; height:28px; border-radius:var(--r-md); border:none; background:transparent; color:var(--n-400); cursor:pointer; font-size:20px; display:inline-flex; align-items:center; justify-content:center; transition:background var(--t); line-height:1; }
+.modal-sluit:hover { background:var(--n-100); color:var(--n-700); }
+.modal-body { padding:16px 20px 20px; }
+.modal-lbl { font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--n-400); margin-bottom:10px; display:block; }
+.systeem-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.s-tegel { display:flex; flex-direction:column; align-items:center; gap:6px; padding:14px 8px; border:1.5px solid var(--n-200); border-radius:var(--r-md); cursor:pointer; transition:all var(--t); background:var(--n-50); }
+.s-tegel:hover { border-color:var(--n-300); background:var(--n-100); }
+.s-tegel.actief { border-color:var(--accent-border); background:var(--accent-subtle); }
+.s-tegel.actief .s-letter { background:var(--accent); color:var(--n-0); }
+.s-tegel.actief .s-naam { color:var(--accent); font-weight:600; }
+.s-letter { width:32px; height:32px; border-radius:50%; background:var(--n-200); color:var(--n-600); font-size:13px; font-weight:700; font-family:var(--font-body); display:inline-flex; align-items:center; justify-content:center; transition:background var(--t),color var(--t); }
+.s-naam { font-size:12px; color:var(--n-600); transition:color var(--t); font-family:var(--font-body); }
+
+@media(max-width:600px) {
+  .main { padding:20px 14px 48px; }
+  .systeem-grid { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">School van <em>morgen</em></div>
+  <div class="header-rechts">
+    <div class="avatar">JM</div>
+  </div>
+</header>
+
+<div class="systeem-bar">
+  <span class="sb-label">Systeem</span>
+
+  <div class="sb-pill actief" data-s="Parnassys" onclick="kiesSysteem(this)">
+    <span class="sb-icoon">P</span>Parnassys
+  </div>
+  <div class="sb-pill" data-s="ESIS" onclick="kiesSysteem(this)">
+    <span class="sb-icoon">E</span>ESIS
+  </div>
+  <div class="sb-pill" data-s="Somtoday" onclick="kiesSysteem(this)">
+    <span class="sb-icoon">S</span>Somtoday
+  </div>
+  <div class="sb-pill" data-s="Magister" onclick="kiesSysteem(this)">
+    <span class="sb-icoon">M</span>Magister
+  </div>
+  <div class="sb-pill" data-s="Focus PO" onclick="kiesSysteem(this)">
+    <span class="sb-icoon">F</span>Focus PO
+  </div>
+  <div class="sb-pill" data-s="Dotcomschool" onclick="kiesSysteem(this)">
+    <span class="sb-icoon">D</span>Dotcomschool
+  </div>
+  <div class="sb-pill" data-s="LDOS" onclick="kiesSysteem(this)">
+    <span class="sb-icoon">L</span>LDOS
+  </div>
+  <div class="sb-pill" data-s="Kindkans" onclick="kiesSysteem(this)">
+    <span class="sb-icoon">K</span>Kindkans
+  </div>
+
+  <div class="sb-rechts">
+    <span class="sb-dot"></span>
+    <span id="verbonden-tekst">Verbonden met Parnassys</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="context-rij">
+    <select class="ctx-select" id="groep-select" onchange="wisselGroep(this)">
+      <option value="">— Groep —</option>
+      <option value="5b" selected>Groep 5b</option>
+      <option value="5a">Groep 5a</option>
+      <option value="6a">Groep 6a</option>
+      <option value="3b">Groep 3b</option>
+      <option value="4a">Groep 4a</option>
+      <option value="7b">Groep 7b</option>
+      <option value="8a">Groep 8a</option>
+    </select>
+    <select class="ctx-select" id="leerling-select" onchange="this.classList.toggle('gevuld',!!this.value)">
+      <option value="">— Leerling —</option>
+      <option value="jan">Jan de Vries</option>
+      <option value="lotte">Lotte Bakker</option>
+      <option value="thomas">Thomas Peters</option>
+      <option value="sara">Sara Amir</option>
+      <option value="noor">Noor Jansen</option>
+      <option value="mike">Mike Dijkstra</option>
+      <option value="fatima">Fatima El-Amrani</option>
+      <option value="lucas">Lucas van der Berg</option>
+      <option value="emma">Emma Hendriks</option>
+      <option value="yusuf">Yusuf Karahan</option>
+      <option value="groep">★ Hele groep</option>
+    </select>
+  </div>
+
+  <div class="invoerkaart">
+    <textarea class="invoerveld" id="invoerveld" placeholder="Typ een notitie of observatie, of gebruik de microfoon…" oninput="telChars()" rows="5"></textarea>
+    <div class="opname-strip" id="opname-strip">
+      <span class="puls"></span>
+      Opname bezig — klik opnieuw om te stoppen
+    </div>
+    <div class="kaart-bodem">
+      <div class="kaart-links">
+        <button class="icoon-knop" id="mic-knop" onclick="toggleMic()" title="Spraak naar tekst">
+          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </button>
+        <span class="char-teller" id="char-teller">0</span>
+      </div>
+      <button class="verstuur-knop" onclick="analyseer()">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Controleer &amp; sync
+      </button>
+    </div>
+  </div>
+
+  <div class="bevestig" id="bevestig">
+    <div class="bev-kop">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Herkend door School van morgen
+    </div>
+    <div class="bev-rij"><span class="b-lbl">Leerling</span><span class="b-val" id="b-leerling">—</span></div>
+    <div class="bev-rij"><span class="b-lbl">Categorie</span><span class="b-val" id="b-categorie">—</span></div>
+    <div class="bev-rij"><span class="b-lbl">Notitie</span><span class="b-val" id="b-notitie">—</span></div>
+    <div class="bev-rij"><span class="b-lbl">Bestemming</span><span class="b-pad" id="b-bestemming">—</span></div>
+    <div class="bev-acties">
+      <button class="verstuur-knop" onclick="sync()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Bevestig &amp; sync
+      </button>
+      <button class="knop-sec" onclick="sluit()">Aanpassen</button>
+    </div>
+  </div>
+
+  <div class="succes" id="succes">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="succes-tekst">Gesynchroniseerd — dossier bijgewerkt.</span>
+  </div>
+
+  <div class="recente-kop">
+    <span class="recente-titel">Recent</span>
+    <a class="recente-link">Alle notities →</a>
+  </div>
+
+  <div class="notitie-kaart">
+    <span class="n-init">LB</span>
+    <div class="n-body">
+      <div class="n-meta"><span class="n-naam">Lotte Bakker</span><span class="n-badge toets">Toetsresultaat</span><span class="n-tijd">Vandaag 08:41</span></div>
+      <div class="n-tekst">Cito rekenen scoort V — moeite met getalbegrip. Besproken met IB-er.</div>
+    </div>
+  </div>
+  <div class="notitie-kaart">
+    <span class="n-init">JV</span>
+    <div class="n-body">
+      <div class="n-meta"><span class="n-naam">Jan de Vries</span><span class="n-badge zorg">Zorgnotitie</span><span class="n-tijd">Gisteren 14:12</span></div>
+      <div class="n-tekst">Afgeleid tijdens de les, mogelijk thuissituatie. Ouders bellen volgende week.</div>
+    </div>
+  </div>
+  <div class="notitie-kaart">
+    <span class="n-init">SA</span>
+    <div class="n-body">
+      <div class="n-meta"><span class="n-naam">Sara Amir</span><span class="n-badge rapport">Rapporttekst</span><span class="n-tijd">Ma 13 mei</span></div>
+      <div class="n-tekst">Goede ontwikkeling in begrijpend lezen. Zelfstandig werken verdient meer aandacht.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const leerlingen = {
+  '5b':['Jan de Vries','Lotte Bakker','Thomas Peters','Sara Amir','Noor Jansen','Mike Dijkstra','Fatima El-Amrani','Lucas van der Berg','Emma Hendriks','Yusuf Karahan'],
+  '5a':['Anna Smit','Bram de Jong','Caro Visser','Daan Mulder','Eva van Dijk'],
+  '6a':['Floor Pietersen','Gijs Willems','Hana Özdemir','Iris de Boer','Joost Bakker'],
+  '3b':['Kees van Dam','Laura Hendriks','Mohamed Saidi','Nina Groot','Olaf Vermeer'],
+  '4a':['Quinten Arts','Rosa Dekker','Sam Kuiper','Tara Wolff','Umar Hassan'],
+  '7b':['Vera Linders','Wout Brouwers','Xena de Wit','Yasmine Karim','Zara Osman'],
+  '8a':['Abel Prins','Bente Hoek','Cas Rijkers','Demi van Loon','Elan Visser'],
+};
+
+const cats = [
+  {w:['cito','toets','score','scoort','lvs','rekenen','spelling','lezen','methode','iep','dia'],l:'Toetsresultaat'},
+  {w:['zorg','ib-er','intern begeleider','handelingsplan','opp','ondersteuning','signaal','moeite'],l:'Zorgnotitie'},
+  {w:['rapport','rapporttekst','verslag','beoordeling','periode'],l:'Rapporttekst'},
+  {w:['ouder','ouders','gesprek','bellen','mail','contact'],l:'Oudercontact'},
+  {w:['afwezig','absent','ziek','verlof','verzuim'],l:'Absentie'},
+  {w:['gedrag','sociaal','emotioneel','pesten','welbevinden'],l:'Observatie SEL'},
+];
+
+function wisselGroep(sel) {
+  const groep = sel.value;
+  const ls = document.getElementById('leerling-select');
+  ls.innerHTML = '<option value="">— Leerling —</option>';
+  (leerlingen[groep]||[]).forEach(n => ls.add(new Option(n, n.split(' ')[0].toLowerCase())));
+  ls.add(new Option('★ Hele groep','groep'));
+  ls.classList.remove('gevuld');
+}
+
+function telChars() {
+  document.getElementById('char-teller').textContent = document.getElementById('invoerveld').value.length;
+}
+
+function detecteer(tekst) {
+  const l = tekst.toLowerCase();
+  for (const c of cats) if (c.w.some(w => l.includes(w))) return c.l;
+  return 'Observatie';
+}
+
+let micBezig = false;
+function toggleMic() {
+  const knop = document.getElementById('mic-knop');
+  const strip = document.getElementById('opname-strip');
+  const veld = document.getElementById('invoerveld');
+  if (!micBezig) {
+    micBezig = true; knop.classList.add('actief'); strip.classList.add('actief');
+    setTimeout(function() {
+      veld.value += (veld.value ? ' ' : '') + 'Jan scoort V op de Cito rekenen, moeite met getalbegrip. IB-er inschakelen.';
+      telChars(); micBezig = false; knop.classList.remove('actief'); strip.classList.remove('actief');
+    }, 2000);
+  } else {
+    micBezig = false; knop.classList.remove('actief'); strip.classList.remove('actief');
+  }
+}
+
+function analyseer() {
+  const tekst = document.getElementById('invoerveld').value.trim();
+  if (!tekst) { document.getElementById('invoerveld').focus(); return; }
+  const lEl = document.getElementById('leerling-select');
+  const lNaam = lEl.options[lEl.selectedIndex].text;
+  const systeem = [...document.querySelectorAll('.sb-pill.actief')].map(p => p.dataset.s).join(' + ') || 'Parnassys';
+  const cat = detecteer(tekst);
+  const kort = tekst.length > 65 ? tekst.substring(0,65) + '…' : tekst;
+  document.getElementById('b-leerling').textContent  = lNaam === '— Leerling —' ? 'Niet geselecteerd' : lNaam;
+  document.getElementById('b-categorie').textContent = cat;
+  document.getElementById('b-notitie').textContent   = kort;
+  document.getElementById('b-bestemming').textContent= systeem + ' → Leerlingdossier → ' + cat;
+  document.getElementById('bevestig').classList.add('zichtbaar');
+  document.getElementById('succes').classList.remove('zichtbaar');
+  document.getElementById('bevestig').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function sluit() { document.getElementById('bevestig').classList.remove('zichtbaar'); }
+
+function sync() {
+  const systeem = [...document.querySelectorAll('.sb-pill.actief')].map(p => p.dataset.s).join(' + ') || 'Parnassys';
+  document.getElementById('bevestig').classList.remove('zichtbaar');
+  document.getElementById('succes-tekst').textContent = 'Gesynchroniseerd naar ' + systeem + ' — dossier bijgewerkt.';
+  document.getElementById('succes').classList.add('zichtbaar');
+  document.getElementById('invoerveld').value = '';
+  document.getElementById('leerling-select').value = '';
+  document.getElementById('leerling-select').classList.remove('gevuld');
+  telChars();
+}
+
+function kiesSysteem(el) {
+  const wasActief = el.classList.contains('actief');
+  const aantalActief = document.querySelectorAll('.sb-pill.actief').length;
+  if (wasActief && aantalActief === 1) return;
+  el.classList.toggle('actief');
+  const actief = [...document.querySelectorAll('.sb-pill.actief')].map(p => p.dataset.s);
+  document.getElementById('verbonden-tekst').textContent =
+    actief.length === 1 ? 'Verbonden met ' + actief[0] : actief.join(' · ');
+}
+</script>
+</body>
+</html>
